@@ -3,8 +3,39 @@
 
 
 
+/**
+ * Set the title separator to "|" (pipe)
+ */
+add_filter( 'document_title_separator', function(){ return '|'; }, 15 );
 
+
+
+/**
+ * Filter the title with D4 SEO overwrites
+ *
+ * @param title $title The title array being filtered
+ */
 function filter_document_title_parts_cmg( $title ) {
+
+	$post_id = get_the_ID();
+	$d4seo_title = get_post_meta( $post_id, 'd4seo_title', true);
+	if ( ! empty($d4seo_title) ) {
+
+		$d4seo_title = apply_filters( 'd4seo_title', $d4seo_title );
+		$d4seo_title = esc_attr($d4seo_title);
+		$title['title'] = $d4seo_title;
+
+
+		$d4seo_title_overwrite = get_post_meta( $post_id, 'd4seo_title_overwrite', true);
+		$d4seo_title_overwrite = apply_filters( 'd4seo_title_overwrite', $d4seo_title_overwrite );
+		if ($d4seo_title_overwrite == '1') {
+			$title['page']     = apply_filters( 'd4seo_title_overwrite_page', '' );
+			$title['tagline']  = apply_filters( 'd4seo_title_overwrite_tagline', '' );
+			$title['site']     = apply_filters( 'd4seo_title_overwrite_site', '' );
+		}
+
+	} 
+
 
 	/*
 					if ( is_home()       ) : echo get_the_title( get_option( 'page_for_posts' ) );
@@ -31,13 +62,3 @@ function filter_document_title_parts_cmg( $title ) {
     return $title;
 
 } add_filter('document_title_parts', 'filter_document_title_parts_cmg', 15);
-
-
-
-function filter_document_title_separator ( $sep ) {
-
-	return ' - ';
-
-} add_filter( 'document_title_separator', 'filter_document_title_separator', 15 );
-
-// $sep = apply_filters( 'document_title_separator', '-' );

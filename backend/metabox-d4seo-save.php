@@ -27,15 +27,33 @@ function metabox_save_d4seo( $post_id ){
 
 	// Save meta fields
 		if ( isset( $_REQUEST['d4seo_title_field'] ) ) {
-			update_post_meta( $post_id, 'd4seo_title', sanitize_text_field( $_POST['d4seo_title_field'] ) );
+			if ( empty( $_REQUEST['d4seo_title_field'] ) ) {
+				delete_post_meta( $post_id, 'd4seo_title', sanitize_text_field( $_POST['d4seo_title_field'] ) );
+			} else {
+				update_post_meta( $post_id, 'd4seo_title', sanitize_text_field( $_POST['d4seo_title_field'] ) );
+			}
+		}
+
+		if ( isset( $_REQUEST['d4seo_title_overwrite_field'] ) ) {
+			update_post_meta( $post_id, 'd4seo_title_overwrite', sanitize_text_field( $_POST['d4seo_title_overwrite_field'] ) );
+		} else {
+			delete_post_meta( $post_id, 'd4seo_title_overwrite', 1 );
 		}
 		
 		if ( isset( $_REQUEST['d4seo_description_field'] ) ) {
-			update_post_meta( $post_id, 'd4seo_description', sanitize_text_field( $_POST['d4seo_description_field'] ) );
+			if ( empty( $_REQUEST['d4seo_description_field'] ) ) {
+				delete_post_meta( $post_id, 'd4seo_description', sanitize_text_field( $_POST['d4seo_description_field'] ) );
+			} else {
+				update_post_meta( $post_id, 'd4seo_description', sanitize_text_field( $_POST['d4seo_description_field'] ) );
+			}
 		}
 
 		if ( isset( $_REQUEST['d4seo_keywords_field'] ) ) {
-			update_post_meta( $post_id, 'd4seo_keywords', sanitize_text_field( $_POST['d4seo_keywords_field'] ) );
+			if ( empty( $_REQUEST['d4seo_keywords_field'] ) ) {
+				delete_post_meta( $post_id, 'd4seo_keywords', sanitize_text_field( $_POST['d4seo_keywords_field'] ) );
+			} else {
+				update_post_meta( $post_id, 'd4seo_keywords', sanitize_text_field( $_POST['d4seo_keywords_field'] ) );
+			}
 		}
 
 } add_action( 'save_post', 'metabox_save_d4seo' );

@@ -3,7 +3,7 @@
 Plugin Name: D4 SEO
 Plugin URI: https://d4am.com/
 Description: 
-Version: 2018.06.18
+Version: 1.0
 Author: D4 Adv. Media
 */
 
