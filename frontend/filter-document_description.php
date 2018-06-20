@@ -30,8 +30,9 @@ function wp_head_meta_description_d4seo() {
 		$description = get_bloginfo('description');
 	}
 
-	$output = '<meta name="description" content="' . esc_attr($description) . '">';
+	$description = esc_attr($description);
+	$description = '<meta name="description" content="' . $description . '">';
 
-	echo $output;
+	echo $description;
 
 } add_action('wp_head', 'wp_head_meta_description_d4seo', 1);

@@ -9,7 +9,9 @@ function wp_head_meta_keywords_d4seo() {
 	if ( ! empty($d4seo_keywords) ) {
 
 		$keywords = apply_filters( 'd4seo_keywords', $d4seo_keywords );
-		echo '<meta name="keywords" content="' . esc_attr($keywords) . '">';
+		$keywords = esc_attr($keywords);
+		$keywords = '<meta name="keywords" content="' . $keywords . '">';
+		echo $keywords;
 
 	} 
 

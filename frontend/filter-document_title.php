@@ -10,6 +10,9 @@ add_filter( 'document_title_separator', function(){ return '|'; }, 15 );
 
 
 
+
+
+
 /**
  * Filter the title with D4 SEO overwrites
  *
