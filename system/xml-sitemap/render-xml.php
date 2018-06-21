@@ -1,11 +1,6 @@
 <?php
 
 
-// sitemap pages
-	// homepage
-// sitemap custom post types
-
-
 
 function render_xmlsitemap_d4seo() {
 
@@ -32,10 +27,21 @@ function render_xmlsitemap_d4seo() {
 function render_xmlsitemap_urlset($variables = null) {
 
 	$variables = explode('-', $variables);
+	
+	$items = apply_filters('d4seo_sitemap_items', array(), $variables );
 
 	$output = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 		$output .= "\n";
-		$output .= apply_filters('d4seo_sitemap_items', array(), $variables );
+		foreach ($items as $item) {
+			$output .= '<url>';
+				$output .= "\n";
+				foreach ($item as $key => $value) {
+					$output .= "<{$key}>" . $value . "</{$key}>";
+					$output .= "\n";
+				}
+			$output .= '</url>';
+			$output .= "\n";
+		}
 	$output .= '</urlset>';
 
 	return $output;

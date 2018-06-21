@@ -2,10 +2,6 @@
 
 
 
-
-
-
-
 function register_d4seo_posts_sitemap( $sitemaps ) {
 
 	$args = array(
@@ -68,27 +64,22 @@ function get_d4seo_sitemap_items_posts( $items, $variables ) {
 			$args['monthnum'] = $variables[2];
 		}
 
-
 		$post_query = new WP_Query( $args );
-
-
-		$items = '';
 		if ( $post_query->have_posts() ) {
+
+			$posts_priority  = apply_filters('d4seo_posts_priority', '0.6');
+			$posts_frequency = apply_filters('d4seo_posts_frequency', 'weekly');
+
 			while ( $post_query->have_posts() ) {
 				$post_query->the_post();
-				$items .= '<url>';
-					$items .= "\n";
-					$items .= '<loc>' . get_the_permalink() . '</loc>';
-					$items .= "\n";
-					$items .= '<lastmod>' . get_the_modified_date('c') . '</lastmod>';
-					$items .= "\n";
-					$items .= '<changefreq>' . 'weekly' . '</changefreq>';
-					$items .= "\n";
-					$items .= '<priority>' . '0.6' . '</priority>';
-					$items .= "\n";
-				$items .= '</url>';
-				$items .= "\n";
+				$items[] = array(
+					'loc'         => get_the_permalink(),
+					'lastmod'     => get_the_modified_date('c'),
+					'changefreq'  => $posts_frequency,
+					'priority'    => $posts_priority,
+				);
 			}
+
 		} wp_reset_postdata();
 
 	}
