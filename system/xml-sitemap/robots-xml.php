@@ -1,12 +1,11 @@
 <?php
 
 
-	/*
 	add_action('do_robots', function() {
 
-		$smUrl = 'sitemap.xml'; // get urls
-		echo "\n" . '# Sitemap: ' . $smUrl . "\n";
+		$sitemap_index = trailingslashit(site_url()) . 'sitemap.xml';
+		$sitemap_index = apply_filters('d4seo_sitemapindex_url', $sitemap_index);
+		echo "\n" . 'Sitemap: ' . $sitemap_index . "\n";
 
 	}, 100, 0);
 
-	//*/
