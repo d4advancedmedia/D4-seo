@@ -9,3 +9,4 @@ Author: D4 Adv. Media
 
 include('frontend/index.php');
 include('backend/index.php');
+include('system/index.php');
