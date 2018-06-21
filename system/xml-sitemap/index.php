@@ -1,6 +1,7 @@
 <?php
 
 
-include 'rewrite-xml.php';
+include 'register-xml.php';
 include 'render-xml.php';
-include 'robots-xml.php';
+include 'rewrite-xml.php';
+# include 'robots-xml.php';
