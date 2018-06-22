@@ -189,3 +189,54 @@
 
 	} add_filter('d4seo_sitemap_items', 'get_d4seo_sitemap_items_pages', 10, 2 );
 
+
+
+
+
+/**
+ * Filter for d4seo_page_item. Add homepage defaults
+ * 
+ * @param array $item_values page values
+ * 
+ * @param array $post_id ID of the current post
+ *
+ * @since 1.1
+ *
+ * @return array $item_values
+ */
+	function filter_d4seo_page_item_home( $item_values, $post_id ) {
+
+		$frontpage_id = get_option( 'page_on_front' );
+		if ( $post_id == $frontpage_id ) {
+			$item_values['changefreq'] = apply_filters('d4seo_home_frequency', 'monthly');
+			$item_values['priority']   = apply_filters('d4seo_home_priority',  '1.0');
+		} 
+		return $item_values;
+
+	} add_filter('d4seo_page_item', 'filter_d4seo_page_item_home', 10, 2);
+
+
+
+
+/**
+ * Filter for d4seo_page_item. Add blog archive page defaults
+ * 
+ * @param array $item_values page values
+ * 
+ * @param array $post_id ID of the current post
+ *
+ * @since 1.1
+ *
+ * @return array $item_values
+ */
+	function filter_d4seo_page_item_blog( $item_values, $post_id ) {
+
+		$blog_id = get_option( 'page_for_posts' );
+		if ( $post_id == $blog_id ) {
+			$pages_priority  = apply_filters('d4seo_pages_priority', '0.7');
+			$item_values['changefreq'] = apply_filters('d4seo_blog_frequency', 'weekly');
+			$item_values['priority']   = apply_filters('d4seo_blog_priority',  $pages_priority);
+		} 
+		return $item_values;
+
+	} add_filter('d4seo_page_item', 'filter_d4seo_page_item_blog', 10, 2);
