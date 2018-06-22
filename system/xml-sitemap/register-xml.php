@@ -71,7 +71,7 @@
 			if ( $post_query->have_posts() ) {
 
 				$posts_priority  = apply_filters('d4seo_posts_priority', '0.6');
-				$posts_frequency = apply_filters('d4seo_posts_frequency', 'weekly');
+				$posts_frequency = apply_filters('d4seo_posts_frequency', 'monthly');
 
 				while ( $post_query->have_posts() ) {
 					$post_query->the_post();
