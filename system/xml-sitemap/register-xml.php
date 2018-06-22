@@ -159,7 +159,7 @@
 			$post_query = new WP_Query( $args );
 			if ( $post_query->have_posts() ) {
 
-				$posts_priority  = apply_filters('d4seo_pages_priority', '0.5');
+				$posts_priority  = apply_filters('d4seo_pages_priority', '0.7');
 				$posts_frequency = apply_filters('d4seo_pages_frequency', 'monthly');
 
 				while ( $post_query->have_posts() ) {
