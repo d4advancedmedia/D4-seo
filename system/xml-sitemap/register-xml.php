@@ -159,17 +159,26 @@
 			$post_query = new WP_Query( $args );
 			if ( $post_query->have_posts() ) {
 
-				$posts_priority  = apply_filters('d4seo_pages_priority', '0.7');
-				$posts_frequency = apply_filters('d4seo_pages_frequency', 'monthly');
+				$pages_frequency = apply_filters('d4seo_pages_frequency', 'monthly');
+				$pages_priority  = apply_filters('d4seo_pages_priority', '0.7');
+
+				$blog_id = get_option( 'page_for_posts' );
 
 				while ( $post_query->have_posts() ) {
 					$post_query->the_post();
-					$items[] = array(
-						'loc'         => get_the_permalink(),
-						'lastmod'     => get_the_modified_date('c'),
-						'changefreq'  => $posts_frequency,
-						'priority'    => $posts_priority,
-					);
+
+					$post_id = get_the_id();
+
+					$exclude = get_post_meta( $post_id, 'd4seo_sitemap_exclude', true);
+					if ( empty($exclude) ) {
+						$item_values = array(
+							'loc'         => get_the_permalink(),
+							'lastmod'     => get_the_modified_date('c'),
+							'changefreq'  => $pages_frequency,
+							'priority'    => $pages_priority,
+						);
+						$items[] = apply_filters( 'd4seo_page_item', $item_values, $post_id );
+					}
 				}
 
 			} wp_reset_postdata();

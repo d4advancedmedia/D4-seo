@@ -20,7 +20,7 @@
 
 		add_meta_box(
 			'food_meta_box',
-			__( 'SEO Information', 'd4am' ),
+			__( 'D4 SEO', 'd4am' ),
 			'metabox_render_d4seo',
 			$post_types,
 			'side',
@@ -40,6 +40,9 @@
 	function metabox_render_d4seo( $post ){ ?>
 
 		<?php wp_nonce_field( 'post_metabox_nonce_d4seo', 'meta_box_nonce_d4seo' ); ?>
+
+
+		<h3>SEO overrides</h3>
 
 		<div class="d4seo_metabox_box">
 			<?php $d4seo_title = get_post_meta( $post->ID, 'd4seo_title', true); ?>
@@ -72,6 +75,16 @@
 			<label for="d4seo_keywords_field">Keywords</label>
 			<input type="text" name="d4seo_keywords_field" value="<?php echo $d4seo_keywords; ?>">	
 		</div>
+
+
+		<h3>XML Sitemap overrides</h3>
+
+		<div class="d4seo_metabox_box">
+			<?php $d4seo_sitemap_exclude = get_post_meta( $post->ID, 'd4seo_sitemap_exclude', true); ?>
+			<input type="checkbox" name="d4seo_sitemap_exclude_field" value="1" <?php checked($d4seo_sitemap_exclude, 1);?>>
+			<label for="d4seo_sitemap_exclude_field">Exclude from Sitemap?</label>
+		</div>
+
 
 	<?php }
 
@@ -132,6 +145,12 @@
 				} else {
 					update_post_meta( $post_id, 'd4seo_keywords', sanitize_text_field( $_POST['d4seo_keywords_field'] ) );
 				}
+			}
+
+			if ( isset( $_REQUEST['d4seo_sitemap_exclude_field'] ) ) {
+				update_post_meta( $post_id, 'd4seo_sitemap_exclude', sanitize_text_field( $_POST['d4seo_sitemap_exclude_field'] ) );
+			} else {
+				delete_post_meta( $post_id, 'd4seo_sitemap_exclude', 1 );
 			}
 
 	} add_action( 'save_post', 'metabox_save_d4seo' );
