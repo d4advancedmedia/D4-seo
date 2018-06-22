@@ -1,7 +1,6 @@
 <?php
 
-include 'metabox-d4seo-render.php';
-include 'metabox-d4seo-save.php';
+include 'metabox-d4seo.php';
 include 'admin_notice-d4seo.php';
 
 function enqueue_admin_d4seo( $hook ) {
