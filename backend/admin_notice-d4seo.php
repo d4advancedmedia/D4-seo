@@ -1,10 +1,11 @@
 <?php
 
-
-// Adds a warning box to the settings page Uses the same style box as the WordPress Update "update-nag"
+/**
+ * Adds a warning box to the settings page Uses the same style box as the WordPress Update "update-nag"
+ *
+ * @since 1.0
+ */
 	function admin_notice_d4seo(){
-
-		global $current_screen;
 
 		$discourage_search_engines = get_option('blog_public');
 		if ( isset($discourage_search_engines) && $discourage_search_engines == 0 ){

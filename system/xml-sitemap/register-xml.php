@@ -2,8 +2,15 @@
 
 
 /**
- * Register Sitemap and Sitemap items - posts
+ * Register XML Sitemap - posts
  * 
+ * adds 'sitemap-posts.xml' to the sitemap index 'sitemap.xml'
+ * 
+ * @param array $sitemaps List of registered sitemaps for the D4SEO sitemap.xml
+ *
+ * @since 1.1
+ *
+ * @return array $sitemaps
  */
 	function register_d4seo_posts_sitemap( $sitemaps ) {
 
@@ -29,6 +36,17 @@
 	} add_filter('d4seo_sitemaps', 'register_d4seo_posts_sitemap');
 
 
+
+
+/**
+ * Register XML Sitemap items - posts
+ * 
+ * @param array $sitemaps List of registered sitemaps for the D4SEO sitemap-posts.xml, sitemap-posts-YYYY.xml, & sitemap-posts-YYYY-MM.xml
+ *
+ * @since 1.1
+ *
+ * @return array $sitemaps
+ */
 	function get_d4seo_sitemap_items_posts( $items, $variables ) {
 
 		if ( $variables[0] == 'posts' ) {
@@ -77,8 +95,15 @@
 
 
 /**
- * Register Sitemap and Sitemap items - pages
+ * Register XML Sitemap - pages
  * 
+ * adds 'sitemap-pages.xml' to the sitemap index 'sitemap.xml'
+ * 
+ * @param array $sitemaps List of registered sitemaps for the D4SEO sitemap.xml
+ *
+ * @since 1.1
+ *
+ * @return array $sitemaps
  */
 	function register_d4seo_pages_sitemap( $sitemaps ) {
 
@@ -105,6 +130,23 @@
 
 	} add_filter('d4seo_sitemaps', 'register_d4seo_pages_sitemap', 5);
 
+
+
+
+
+
+
+/**
+ * Register XML Sitemap items - pages
+ * 
+ * @param array $items feeds items for the D4SEO sitemap-pages.xml
+ * 
+ * @param array $variables The XML site
+ *
+ * @since 1.1
+ *
+ * @return array $items
+ */
 	function get_d4seo_sitemap_items_pages( $items, $variables ) {
 
 		if ( $variables[0] == 'pages' ) {

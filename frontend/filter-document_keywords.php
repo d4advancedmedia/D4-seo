@@ -1,18 +1,23 @@
 <?php
 
-function wp_head_meta_keywords_d4seo() {
+/**
+ * Echoes the meta keywords in the head tag.
+ *
+ * @since 1.0
+ */
+	function wp_head_meta_keywords_d4seo() {
 
-	$post_id = get_the_ID();
+		$post_id = get_the_ID();
 
-	$d4seo_keywords = get_post_meta( $post_id, 'd4seo_keywords', true);
+		$d4seo_keywords = get_post_meta( $post_id, 'd4seo_keywords', true);
 
-	if ( ! empty($d4seo_keywords) ) {
+		if ( ! empty($d4seo_keywords) ) {
 
-		$keywords = apply_filters( 'd4seo_keywords', $d4seo_keywords );
-		$keywords = esc_attr($keywords);
-		$keywords = '<meta name="keywords" content="' . $keywords . '">';
-		echo $keywords;
+			$keywords = apply_filters( 'd4seo_keywords', $d4seo_keywords );
+			$keywords = esc_attr($keywords);
+			$keywords = '<meta name="keywords" content="' . $keywords . '">';
+			echo $keywords;
 
-	} 
+		} 
 
-} add_action('wp_head', 'wp_head_meta_keywords_d4seo', 1);
+	} add_action('wp_head', 'wp_head_meta_keywords_d4seo', 1);
