@@ -12,6 +12,7 @@ include('system/index.php');
 
 
 register_activation_hook(__FILE__, function() {
+	rewrite_rules_xmlsitemap_d4seo();
 	flush_rewrite_rules();
 });
 
