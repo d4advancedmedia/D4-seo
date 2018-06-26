@@ -13,17 +13,22 @@
  */
 function register_d4seo_default_sitemaps() {
 
+
+	$post_changefreq = apply_filters( 'd4sitemap_post_changefreq', 'monthly');
+	$post_priority = apply_filters( 'd4sitemap_post_priority', '0.6');
 	register_d4sitemap('posts',array(
-		'priority'   => '0.6',
-		'changefreq' => 'monthly',
+		'changefreq' => $post_changefreq,
+		'priority'   => $post_priority,
 		'query_args' => array(
 			'post_type' => array('post'),
 		)
 	));
 
+	$page_changefreq = apply_filters( 'd4sitemap_page_changefreq', 'monthly');
+	$page_priority = apply_filters( 'd4sitemap_page_priority', '0.8');
 	register_d4sitemap('pages',array(
-		'priority'   => '0.7',
-		'changefreq' => 'monthly',
+		'changefreq' => $page_changefreq,
+		'priority'   => $page_priority,
 		'query_args' => array(
 			'post_type' => array('page'),
 		)
