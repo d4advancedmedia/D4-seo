@@ -151,8 +151,6 @@
 				while ( $sitemap_query->have_posts() ) {
 					$sitemap_query->the_post();
 
-					$item_id = get_the_id();
-
 					$item = array(
 						'loc'        => get_the_permalink(),
 						'lastmod'    => get_the_modified_date('c'),
@@ -160,7 +158,12 @@
 						'priority'   => $posts_priority,
 					);
 
-					$sitemap_items[$item_id] = apply_filters( 'd4seo_sitemap_items', $item, $variables );
+					$item = apply_filters( 'd4seo_sitemap_items', $item, $variables );
+
+					if ( ! empty($item) ) {
+						$item_id = get_the_id();
+						$sitemap_items[$item_id] = $item;
+					}
 
 				}
 

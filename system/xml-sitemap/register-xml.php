@@ -38,6 +38,20 @@ function register_d4seo_default_sitemaps() {
 
 
 
+
+
+
+/**
+ * default page and post priorities, with filter overrides. 
+ *
+ *
+ * @param array $item Sitemap item
+ * @param array $variables url query variables i.e. sitemap-$variables[0]-$variables[1]-$variables[2].xml
+ *
+ * @since 1.1
+ * 
+ * @return array $item
+ */
 function filter_d4seo_sitemap_items_pages ($item, $variables) {
 
 	if (  $variables[0] == 'pages' ) {
@@ -58,8 +72,40 @@ function filter_d4seo_sitemap_items_pages ($item, $variables) {
 	}
 
 	return $item;
- 
+
 } add_filter( 'd4seo_sitemap_items', 'filter_d4seo_sitemap_items_pages', 10, 2);
+
+
+
+
+
+
+
+
+/**
+ * adds 'exclude from sitemap' functionality
+ * 
+ * If excluded from sitemap, it returns an empty array
+ *
+ * @param array $item Sitemap item
+ *
+ * @since 1.1
+ * 
+ * @return array $item
+ * @return array empty
+ */
+	function filter_d4seo_sitemap_items_exclude ($item) {
+		
+		$exclude = get_post_meta( get_the_id(), 'd4seo_sitemap_exclude', true); 
+		if ( empty($exclude) ) {
+			return $item;
+		} else {
+			return array();
+		}
+
+	} add_filter( 'd4seo_sitemap_items', 'filter_d4seo_sitemap_items_exclude');
+
+
 
 
 
