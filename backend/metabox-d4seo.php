@@ -85,6 +85,36 @@
 			<label for="d4seo_sitemap_exclude_field">Exclude from Sitemap?</label>
 		</div>
 
+		<div class="d4seo_metabox_box">
+			<?php $d4seo_priority_override = get_post_meta( $post->ID, 'd4seo_priority_override', true); ?>
+			<input type="checkbox" name="d4seo_priority_override_field" value="1" <?php checked($d4seo_priority_override, 1);?>>
+			<label for="d4seo_priority_override_field">Override priority?</label>
+			<div id="d4seo_metabox_priority">
+				<?php $d4seo_priority = get_post_meta( $post->ID, 'd4seo_priority', true); ?>
+				<?php if ( empty($d4seo_priority) ) {
+					$d4seo_priority = '0.5';
+				}  ?>
+				<label for="d4seo_priority_field">Priority</label>
+				<input type="range" name="d4seo_priority_field" min="0" max="1" step="0.1" value="<?php echo $d4seo_priority; ?>" oninput="update_input_val(this.value, 'd4seo_priority_value')" onchange="update_input_val(this.value, 'd4seo_priority_value')">
+				<div id="d4seo_priority_value"><?php echo $d4seo_priority; ?></div>
+			</div>
+		</div>
+
+
+		<div class="d4seo_metabox_box">
+			<?php $d4seo_changefreq_override = get_post_meta( $post->ID, 'd4seo_changefreq_override', true); ?>
+			<input type="checkbox" name="d4seo_changefreq_override_field" value="1" <?php checked($d4seo_changefreq_override, 1);?>>
+			<label for="d4seo_changefreq_override_field">Override Change Freqency?</label>
+			<div id="d4seo_metabox_changefreq">
+				<?php $d4seo_changefreq = get_post_meta( $post->ID, 'd4seo_changefreq', true); ?>
+				<?php if ( empty($d4seo_changefreq) ) {
+					$d4seo_changefreq = 'monthly';
+				}  ?>
+				<label for="d4seo_changefreq_field">Change Frequency</label>
+				<input type="text" name="d4seo_changefreq_field"value="<?php echo $d4seo_changefreq; ?>">
+			</div>
+		</div>
+
 
 	<?php }
 
@@ -151,6 +181,22 @@
 				update_post_meta( $post_id, 'd4seo_sitemap_exclude', sanitize_text_field( $_POST['d4seo_sitemap_exclude_field'] ) );
 			} else {
 				delete_post_meta( $post_id, 'd4seo_sitemap_exclude', 1 );
+			}
+
+			if ( isset( $_REQUEST['d4seo_priority_override_field'] ) ) {
+				update_post_meta( $post_id, 'd4seo_priority_override', sanitize_text_field( $_POST['d4seo_priority_override_field'] ) );
+				update_post_meta( $post_id, 'd4seo_priority', sanitize_text_field( $_POST['d4seo_priority_field'] ) );
+			} else {
+				delete_post_meta( $post_id, 'd4seo_priority_override', 1 );
+				delete_post_meta( $post_id, 'd4seo_priority' );
+			}
+
+			if ( isset( $_REQUEST['d4seo_changefreq_override_field'] ) ) {
+				update_post_meta( $post_id, 'd4seo_changefreq_override', sanitize_text_field( $_POST['d4seo_changefreq_override_field'] ) );
+				update_post_meta( $post_id, 'd4seo_changefreq', sanitize_text_field( $_POST['d4seo_changefreq_field'] ) );
+			} else {
+				delete_post_meta( $post_id, 'd4seo_changefreq_override', 1 );
+				delete_post_meta( $post_id, 'd4seo_changefreq' );
 			}
 
 	} add_action( 'save_post', 'metabox_save_d4seo' );

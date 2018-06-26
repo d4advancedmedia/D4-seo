@@ -1,4 +1,4 @@
-.d4seo_metabox_box input[type="text"], .d4seo_metabox_box textarea {
+.d4seo_metabox_box input[type="text"],.d4seo_metabox_box input[type="range"], .d4seo_metabox_box textarea {
 	display: block;
 	width: 100%;
 }

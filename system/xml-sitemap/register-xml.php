@@ -165,6 +165,38 @@ function filter_d4seo_sitemap_items_exclude ($item) {
 
 
 
+
+
+
+/**
+ * adds metabox sitemap override functionality
+ *
+ * @param array $item Sitemap item
+ *
+ * @since 1.1
+ * 
+ * @return array $item
+ */
+function filter_d4seo_sitemap_items_overrides ($item) {
+	
+	$priority = get_post_meta( get_the_id(), 'd4seo_priority', true); 
+	if ( ! empty($priority) ) {
+		$item['priority'] = $priority;
+	} 
+	
+	$changefreq = get_post_meta( get_the_id(), 'd4seo_changefreq', true); 
+	if ( ! empty($changefreq) ) {
+		$item['changefreq'] = $changefreq;
+	} 
+
+	return $item;
+
+} add_filter( 'd4seo_sitemap_items', 'filter_d4seo_sitemap_items_overrides');
+
+
+
+
+
 /**
  * registers a site map to the $d4seo_sitemap object
  * 
