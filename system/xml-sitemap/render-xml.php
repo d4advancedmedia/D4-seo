@@ -99,36 +99,49 @@
 
 		$sitemap_query_args = $sitemap['query_args'];
 
-		$sitemap_items = new WP_Query( $sitemap_query_args );
+		$sitemap_query = new WP_Query( $sitemap_query_args );
 
-		if ( $sitemap_items->have_posts() ) {
+		if ( $sitemap_query->have_posts() ) {
 
-			$posts_frequency = $sitemap['changefreq'];
-			$posts_priority  = $sitemap['priority'];
 
-			$output = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-				$output .= "\n";
+			// Build sitemap items
+				$posts_frequency = $sitemap['changefreq'];
+				$posts_priority  = $sitemap['priority'];
 
-				while ( $sitemap_items->have_posts() ) {
-					$sitemap_items->the_post();
+				$sitemap_item = array();
+				while ( $sitemap_query->have_posts() ) {
+					$sitemap_query->the_post();
 
-					$output .= '<url>';
-						$output .= "\n";
-						$output .= '<loc>'        . get_the_permalink()        . '</loc>';
-						$output .= "\n";
-						$output .= '<lastmod>'    . get_the_modified_date('c') . '</lastmod>';
-						$output .= "\n";
-						$output .= '<changefreq>' . $posts_frequency . '</changefreq>';
-						$output .= "\n";
-						$output .= '<priority>'   . $posts_priority  . '</priority>';
-						$output .= "\n";
-					$output .= '</url>';
-					$output .= "\n";
+					$item_id = get_the_id();
+
+					$sitemap_item[$item_id] = array(
+						'loc'        => get_the_permalink(),
+						'lastmod'    => get_the_modified_date('c'),
+						'changefreq' => $posts_frequency,
+						'priority'   => $posts_priority,
+					);
+
+					$sitemap_item[$item_id] = apply_filters( 'd4seo_sitemap_items', $sitemap_item[$item_id], $slug );
 
 				}
-			$output .= '</urlset>';
 
-			return $output;
+			// Build render output
+				$output = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+					$output .= "\n";
+					foreach ( $sitemap_item as $item_id => $item_values ) {
+						$output .= '<url>';
+							$output .= "\n";
+							foreach ( $item_values as $tag => $value ) {
+								$output .= "\t";
+								$output .= "<{$tag}>" . $value . "</{$tag}>";
+								$output .= "\n";
+							}
+						$output .= '</url>';
+						$output .= "\n";
+					}
+				$output .= '</urlset>';
+
+				return $output;
 
 		} wp_reset_postdata();
 		
