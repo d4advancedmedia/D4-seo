@@ -153,14 +153,14 @@
 
 					$item_id = get_the_id();
 
-					$sitemap_items[$item_id] = array(
+					$item = array(
 						'loc'        => get_the_permalink(),
 						'lastmod'    => get_the_modified_date('c'),
 						'changefreq' => $posts_frequency,
 						'priority'   => $posts_priority,
 					);
 
-					$sitemap_items[$item_id] = apply_filters( 'd4seo_sitemap_items', $sitemap_items[$item_id], $variables );
+					$sitemap_items[$item_id] = apply_filters( 'd4seo_sitemap_items', $item, $variables );
 
 				}
 
