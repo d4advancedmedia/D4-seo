@@ -5,7 +5,7 @@
 /**
  * Detects whether the request is a sitemap or an index and renders appropriately, then echoes it
  *
- * @since 1.1
+ * @since 2000
  */
 function render_xmlsitemap_d4seo() {
 
@@ -35,7 +35,7 @@ function render_xmlsitemap_d4seo() {
 /**
  * Builds the markup for sitemap index
  *
- * @since 1.1
+ * @since 2000
  * 
  * @return string $output
  */
@@ -87,7 +87,7 @@ function render_xmlsitemap_index() {
  *
  * @param array $variables url query variables i.e. sitemap-$variables[0]-$variables[1]-$variables[2].xml
  *
- * @since 1.1
+ * @since 2000
  * 
  * @return string $output
  */
@@ -128,7 +128,7 @@ function render_xmlsitemap_urlset($variables) {
  *
  * @param array $variables url query variables i.e. sitemap-$variables[0]-$variables[1]-$variables[2].xml
  *
- * @since 1.1
+ * @since 2000
  * 
  * @return array $sitemap_items
  */
@@ -162,7 +162,7 @@ function get_xmlsitemap_items($variables) {
 				/**
 				 * Filters the sitemap item
 				 *
-				 * @since 1.1
+				 * @since 2000
 				 *
 				 * @param array $item
 				 * @param array $variables

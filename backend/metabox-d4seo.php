@@ -34,6 +34,7 @@
  * Render meta box
  *
  * @since 1.0
+ * @since 2000 - added sitemap overrides; exclude from sitemap, priority override, changefreq override
  * 
  * @param post $post The post object
  */
@@ -125,6 +126,9 @@
  * Saves meta along side of posts
  *
  * @param int $post_id The post ID.
+ * 
+ * @since 1.0
+ * @since 2000 - added sitemap overrides; exclude from sitemap, priority override, changefreq override
  *
  * @link https://codex.wordpress.org/Plugin_API/Action_Reference/save_post
  */

@@ -4,7 +4,7 @@
 /**
  * echoes `Sitemap: http://www.siteurl.com/sitemap.xml` to the robots.txt
  *
- * @since 1.1
+ * @since 2000
  *
  */
 	add_action('do_robots', function() {

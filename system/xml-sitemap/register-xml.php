@@ -7,7 +7,7 @@
  * 
  * @param array $sitemaps List of registered sitemaps for the D4SEO sitemap.xml
  *
- * @since 1.1
+ * @since 2000
  *
  * @return array $sitemaps
  */
@@ -16,7 +16,7 @@ function register_d4seo_default_sitemaps() {
 	/**
 	 * Filters the default page change frequency
 	 *
-	 * @since 1.1
+	 * @since 2000
 	 *
 	 * @param string $page_frequency
 	 */
@@ -25,7 +25,7 @@ function register_d4seo_default_sitemaps() {
 	/**
 	 * Filters the default page priority
 	 *
-	 * @since 1.1
+	 * @since 2000
 	 *
 	 * @param string $page_priority
 	 */
@@ -42,7 +42,7 @@ function register_d4seo_default_sitemaps() {
 	/**
 	 * Filters the default post change frequency
 	 *
-	 * @since 1.1
+	 * @since 2000
 	 *
 	 * @param string $post_frequency
 	 */
@@ -51,7 +51,7 @@ function register_d4seo_default_sitemaps() {
 	/**
 	 * Filters the default post priority
 	 *
-	 * @since 1.1
+	 * @since 2000
 	 *
 	 * @param string $post_priority
 	 */
@@ -78,7 +78,7 @@ function register_d4seo_default_sitemaps() {
  * @param array $item Sitemap item
  * @param array $variables url query variables i.e. sitemap-$variables[0]-$variables[1]-$variables[2].xml
  *
- * @since 1.1
+ * @since 2000
  * 
  * @return array $item
  */
@@ -94,7 +94,7 @@ function filter_d4seo_sitemap_items_pages ($item, $variables) {
 			/**
 			 * Filters the default homepage change frequency
 			 *
-			 * @since 1.1
+			 * @since 2000
 			 *
 			 * @param string $home_frequency
 			 */
@@ -103,7 +103,7 @@ function filter_d4seo_sitemap_items_pages ($item, $variables) {
 			/**
 			 * Filters the default homepage priority
 			 *
-			 * @since 1.1
+			 * @since 2000
 			 *
 			 * @param string $home_priority
 			 */
@@ -117,7 +117,7 @@ function filter_d4seo_sitemap_items_pages ($item, $variables) {
 			/**
 			 * Filters the default blog page change frequency
 			 *
-			 * @since 1.1
+			 * @since 2000
 			 *
 			 * @param string $blog_priority
 			 */
@@ -145,7 +145,7 @@ function filter_d4seo_sitemap_items_pages ($item, $variables) {
  *
  * @param array $item Sitemap item
  *
- * @since 1.1
+ * @since 2000
  * 
  * @return array $item
  * @return array empty
@@ -173,7 +173,7 @@ function filter_d4seo_sitemap_items_exclude ($item) {
  *
  * @param array $item Sitemap item
  *
- * @since 1.1
+ * @since 2000
  * 
  * @return array $item
  */
@@ -204,7 +204,7 @@ function filter_d4seo_sitemap_items_overrides ($item) {
  *
  * @param string $sitemap slug for the unique sitemap, also part of "sitemap-$sitemap.xml" schema
  *
- * @since 1.1
+ * @since 2000
  * 
  * @global array $d4seo_sitemapes
  * 
@@ -231,7 +231,7 @@ function register_d4sitemap( $sitemap, $args = array() ) {
 		/**
 		 * Filters the default sitemap arguments
 		 *
-		 * @since 1.1
+		 * @since 2000
 		 *
 		 * @param string $default_args
 		 */
@@ -256,7 +256,7 @@ function register_d4sitemap( $sitemap, $args = array() ) {
  *
  * @param string $sitemap slug for the unique sitemap, also part of "sitemap-$sitemap.xml" schema
  *
- * @since 1.1
+ * @since 2000
  * 
  * @return array $d4seo_sitemaps
  */

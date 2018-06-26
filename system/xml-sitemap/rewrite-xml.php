@@ -5,7 +5,7 @@
  * 
  * the 'add_rewrite_tag' is used to pass the 'xmlurl' variable to load in sub-sitemaps.
  *
- * @since 1.1
+ * @since 2000
  *
  * @return void
  */
@@ -20,7 +20,7 @@
 /**
  * Add rewrites for 'sitemap.xml' & 'sitemap-xxxx.xml' urls.
  *
- * @since 1.1
+ * @since 2000
  *
  * @return void
  */
@@ -42,7 +42,7 @@
  *
  * @param array $query_vars list of registered Query Vars
  * 
- * @since 1.1
+ * @since 2000
  *
  * @return $query_vars
  */
@@ -59,7 +59,7 @@
 /**
  * Loads in the xml sitemap templates upon virtual page request.
  * 
- * @since 1.1
+ * @since 2000
  *
  * @return void
  */
