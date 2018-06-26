@@ -7,26 +7,26 @@
  *
  * @since 1.1
  */
-	function render_xmlsitemap_d4seo() {
+function render_xmlsitemap_d4seo() {
 
-		global $wp_query;
+	global $wp_query;
 
-		$variables = $wp_query->query_vars['xmlurl'];
+	$variables = $wp_query->query_vars['xmlurl'];
 
-		header('Content-Type: text/xml; charset=utf-8');
-		$output = '<?xml version="1.0" encoding="UTF-8"?>';
-			$output .= "\n";
+	header('Content-Type: text/xml; charset=utf-8');
+	$output = '<?xml version="1.0" encoding="UTF-8"?>';
+		$output .= "\n";
 
-			if ( empty($variables) ) {
-				$output .= render_xmlsitemap_index();
-			} else {
-				$variables = explode('-', $variables);
-				$output .= render_xmlsitemap_urlset($variables);
-			}
+		if ( empty($variables) ) {
+			$output .= render_xmlsitemap_index();
+		} else {
+			$variables = explode('-', $variables);
+			$output .= render_xmlsitemap_urlset($variables);
+		}
 
-		echo $output;
+	echo $output;
 
-	}
+}
 
 
 
@@ -39,44 +39,44 @@
  * 
  * @return string $output
  */
-	function render_xmlsitemap_index() {
+function render_xmlsitemap_index() {
 
-		global $d4seo_sitemaps;
-		$baseURL = trailingslashit(site_url());
+	global $d4seo_sitemaps;
+	$baseURL = trailingslashit(site_url());
 
-		$output = '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-			$output .= "\n";
+	$output = '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+		$output .= "\n";
 
-			foreach ( $d4seo_sitemaps as $slug => $sitemap_args ) {
+		foreach ( $d4seo_sitemaps as $slug => $sitemap_args ) {
 
-				$query_args = $sitemap_args['query_args'];
-				$query_args['posts_per_page'] = 1;
-				$query_args['orderby']        = 'modified';
-				$query_args['order']          = 'DESC';
+			$query_args = $sitemap_args['query_args'];
+			$query_args['posts_per_page'] = 1;
+			$query_args['orderby']        = 'modified';
+			$query_args['order']          = 'DESC';
 
-				$sitemap_query = new WP_Query( $query_args );
-				if ( $sitemap_query->have_posts() ) {
-					while ( $sitemap_query->have_posts() ) {
-						$sitemap_query->the_post();
+			$sitemap_query = new WP_Query( $query_args );
+			if ( $sitemap_query->have_posts() ) {
+				while ( $sitemap_query->have_posts() ) {
+					$sitemap_query->the_post();
 
-						$output .= '<sitemap>';
-							$output .= "\n";
-							$output .= '<loc>' . $baseURL . 'sitemap-' . $slug . '.xml' . '</loc>';
-							$output .= "\n";
-							$output .= '<lastmod>' . get_the_modified_date('c') . '</lastmod>';
-							$output .= "\n";
-						$output .= '</sitemap>';
+					$output .= '<sitemap>';
 						$output .= "\n";
+						$output .= '<loc>' . $baseURL . 'sitemap-' . $slug . '.xml' . '</loc>';
+						$output .= "\n";
+						$output .= '<lastmod>' . get_the_modified_date('c') . '</lastmod>';
+						$output .= "\n";
+					$output .= '</sitemap>';
+					$output .= "\n";
 
-					} wp_reset_postdata();
-				}
+				} wp_reset_postdata();
 			}
+		}
 
-		$output .= '</sitemapindex>';
+	$output .= '</sitemapindex>';
 
-		return $output;
+	return $output;
 
-	}
+}
 
 
 
@@ -91,34 +91,34 @@
  * 
  * @return string $output
  */
-	function render_xmlsitemap_urlset($variables) {
+function render_xmlsitemap_urlset($variables) {
 
-		$sitemap_items = get_xmlsitemap_items($variables);
+	$sitemap_items = get_xmlsitemap_items($variables);
 
-		// Build render output
-		if ( ! empty($sitemap_items) ) {
+	// Build render output
+	if ( ! empty($sitemap_items) ) {
 
-			$output = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-				$output .= "\n";
-				foreach ( $sitemap_items as $item_id => $item_values ) {
-					$output .= '<url>';
-						$output .= "\n";
-						foreach ( $item_values as $tag => $value ) {
-							$output .= "\t";
-							$output .= "<{$tag}>" . $value . "</{$tag}>";
-							$output .= "\n";
-						}
-					$output .= '</url>';
+		$output = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+			$output .= "\n";
+			foreach ( $sitemap_items as $item_id => $item_values ) {
+				$output .= '<url>';
 					$output .= "\n";
-				}
-			$output .= '</urlset>';
+					foreach ( $item_values as $tag => $value ) {
+						$output .= "\t";
+						$output .= "<{$tag}>" . $value . "</{$tag}>";
+						$output .= "\n";
+					}
+				$output .= '</url>';
+				$output .= "\n";
+			}
+		$output .= '</urlset>';
 
-			return $output;
-		
-		}
-
-
+		return $output;
+	
 	}
+
+
+}
 
 
 
@@ -132,46 +132,55 @@
  * 
  * @return array $sitemap_items
  */
-	function get_xmlsitemap_items($variables) {
+function get_xmlsitemap_items($variables) {
 
-		global $d4seo_sitemaps;
-		$sitemap = $d4seo_sitemaps[$variables[0]];
+	global $d4seo_sitemaps;
+	$sitemap = $d4seo_sitemaps[$variables[0]];
 
-		$sitemap_query_args = $sitemap['query_args'];
-		$sitemap_query = new WP_Query( $sitemap_query_args );
+	$sitemap_query_args = $sitemap['query_args'];
+	$sitemap_query = new WP_Query( $sitemap_query_args );
 
-		if ( $sitemap_query->have_posts() ) {
-	
-			$sitemap_items = array();
+	if ( $sitemap_query->have_posts() ) {
 
-			// Build sitemap items
-				$posts_frequency = $sitemap['changefreq'];
-				$posts_priority  = $sitemap['priority'];
+		$sitemap_items = array();
 
-				while ( $sitemap_query->have_posts() ) {
-					$sitemap_query->the_post();
+		// Build sitemap items
+			$posts_frequency = $sitemap['changefreq'];
+			$posts_priority  = $sitemap['priority'];
 
-					$item = array(
-						'loc'        => get_the_permalink(),
-						'lastmod'    => get_the_modified_date('c'),
-						'changefreq' => $posts_frequency,
-						'priority'   => $posts_priority,
-					);
+			while ( $sitemap_query->have_posts() ) {
+				$sitemap_query->the_post();
 
-					$item = apply_filters( 'd4seo_sitemap_items', $item, $variables );
+				$item = array(
+					'loc'        => get_the_permalink(),
+					'lastmod'    => get_the_modified_date('c'),
+					'changefreq' => $posts_frequency,
+					'priority'   => $posts_priority,
+				);
 
-					if ( ! empty($item) ) {
-						$item_id = get_the_id();
-						$sitemap_items[$item_id] = $item;
-					}
 
+				/**
+				 * Filters the sitemap item
+				 *
+				 * @since 1.1
+				 *
+				 * @param array $item
+				 * @param array $variables
+				 */
+				$item = apply_filters( 'd4seo_sitemap_items', $item, $variables );
+
+				if ( ! empty($item) ) {
+					$item_id = get_the_id();
+					$sitemap_items[$item_id] = $item;
 				}
 
-				return $sitemap_items;
+			}
 
-		} wp_reset_postdata();
+			return $sitemap_items;
 
-	}
+	} wp_reset_postdata();
+
+}
 
 
 
