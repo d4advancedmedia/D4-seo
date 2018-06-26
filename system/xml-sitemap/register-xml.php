@@ -1,8 +1,7 @@
 <?php
 
-
 /**
- * Register XML Sitemap - posts
+ * Register default XML Sitemaps
  * 
  * adds 'sitemap-posts.xml' to the sitemap index 'sitemap.xml'
  * 
@@ -12,231 +11,96 @@
  *
  * @return array $sitemaps
  */
-	function register_d4seo_posts_sitemap( $sitemaps ) {
+function register_d4seo_default_sitemaps() {
 
-		$args = array(
-			'posts_per_page'   => 1,
-			'post_type'        => array('post'),
-		);
+	register_d4sitemap('posts',array(
+		'priority'   => '0.6',
+		'changefreq' => 'monthly',
+		'query_args' => array(
+			'post_type' => array('post'),
+		)
+	));
 
-		$post_query = new WP_Query( $args );
-		if ( $post_query->have_posts() ) {
-			while ( $post_query->have_posts() ) {
-				$post_query->the_post();
-				$lastmod = get_the_modified_date('c');
-			}
-			$sitemaps['posts'] = array(
-				'slug'    => 'posts',
-				'lastmod' => $lastmod,
-			);
-		} wp_reset_postdata();
+	register_d4sitemap('pages',array(
+		'priority'   => '0.7',
+		'changefreq' => 'monthly',
+		'query_args' => array(
+			'post_type' => array('page'),
+		)
+	));
 
-		return $sitemaps;
+} add_action( 'init', 'register_d4seo_default_sitemaps' );
 
-	} add_filter('d4seo_sitemaps', 'register_d4seo_posts_sitemap');
 
 
 
 
 /**
- * Register XML Sitemap items - posts
+ * registers a site map to the $d4seo_sitemap object
  * 
- * @param array $sitemaps List of registered sitemaps for the D4SEO sitemap-posts.xml, sitemap-posts-YYYY.xml, & sitemap-posts-YYYY-MM.xml
+ * The $d4seo_sitemap is used to render the index and post type site maps.
+ *
+ * @param string $sitemap slug for the unique sitemap, also part of "sitemap-$sitemap.xml" schema
  *
  * @since 1.1
- *
- * @return array $sitemaps
+ * 
+ * @global array $d4seo_sitemapes
+ * 
+ * @return array $d4seo_sitemaps
  */
-	function get_d4seo_sitemap_items_posts( $items, $variables ) {
+	function register_d4sitemap( $sitemap, $args = array() ) {
 
-		if ( $variables[0] == 'posts' ) {
+		global $d4seo_sitemaps;
 
-			$args = array(
-				'posts_per_page'   => -1,
-				'post_type'        => array('post'),
-			);
-
-			// if /sitemap-posts-xxxx.xml (year)
-			if ( isset($variables[1]) && strlen($variables[1]) == 4 ) {
-				$args['year'] = $variables[1];
-			}
-
-
-			// if /sitemap-posts-2018-xx.xml (month)
-			if ( isset($variables[2]) ) {
-				$args['monthnum'] = $variables[2];
-			}
-
-			$post_query = new WP_Query( $args );
-			if ( $post_query->have_posts() ) {
-
-				$posts_priority  = apply_filters('d4seo_posts_priority', '0.6');
-				$posts_frequency = apply_filters('d4seo_posts_frequency', 'monthly');
-
-				while ( $post_query->have_posts() ) {
-					$post_query->the_post();
-					$items[] = array(
-						'loc'         => get_the_permalink(),
-						'lastmod'     => get_the_modified_date('c'),
-						'changefreq'  => $posts_frequency,
-						'priority'    => $posts_priority,
-					);
-				}
-
-			} wp_reset_postdata();
-
+		if ( ! is_array( $d4seo_sitemaps ) ) {
+			$d4seo_sitemaps = array();
 		}
 
-		return $items;
+		$sitemap = sanitize_key( $sitemap );
 
-	} add_filter('d4seo_sitemap_items', 'get_d4seo_sitemap_items_posts', 10, 2 );
+		// Set defaults & compare to args
+			$default_args = array(
+				'priority'   => '0.5',
+				'changefreq' => 'monthly',
+				'query_args' => array(),
+			);
+			$default_args = apply_filters('d4sitemap_args', $default_args);
 
+			$args = wp_parse_args( $args, $default_args );
 
-
-
-/**
- * Register XML Sitemap - pages
- * 
- * adds 'sitemap-pages.xml' to the sitemap index 'sitemap.xml'
- * 
- * @param array $sitemaps List of registered sitemaps for the D4SEO sitemap.xml
- *
- * @since 1.1
- *
- * @return array $sitemaps
- */
-	function register_d4seo_pages_sitemap( $sitemaps ) {
-
-
-		$args = array(
-			'posts_per_page'   => 1,
-			'post_type'        => array('page'),
-		);
-
-		$post_query = new WP_Query( $args );
-		if ( $post_query->have_posts() ) {
-			while ( $post_query->have_posts() ) {
-				$post_query->the_post();
-				$lastmod = get_the_modified_date('c');
+			if ( ! isset($args['query_args']['posts_per_page']) ) {
+				$args['query_args']['posts_per_page'] = -1;
 			}
-			$sitemaps['pages'] = array(
-				'slug'    => 'pages',
-				'lastmod' => $lastmod,
-			);
-		} wp_reset_postdata();
 
+		$d4seo_sitemaps[ $sitemap ] = $args;
 
-		return $sitemaps;
-
-	} add_filter('d4seo_sitemaps', 'register_d4seo_pages_sitemap', 5);
-
-
-
-
+	}
 
 
 
 /**
- * Register XML Sitemap items - pages
+ * unregisters a sitemap
  * 
- * @param array $items feeds items for the D4SEO sitemap-pages.xml
- * 
- * @param array $variables The XML site
+ * removes a registered sitemap from the $d4seo_sitemap object
+ *
+ * @param string $sitemap slug for the unique sitemap, also part of "sitemap-$sitemap.xml" schema
  *
  * @since 1.1
- *
- * @return array $items
+ * 
+ * @return array $d4seo_sitemaps
  */
-	function get_d4seo_sitemap_items_pages( $items, $variables ) {
+	function unregister_d4sitemap( $sitemap ) {
 
-		if ( $variables[0] == 'pages' ) {
+		global $d4seo_sitemaps;
 
-			$args = array(
-				'posts_per_page'   => -1,
-				'post_type'        => array('page'),
-			);
+		$sitemap = sanitize_key( $sitemap );
 
-			$post_query = new WP_Query( $args );
-			if ( $post_query->have_posts() ) {
-
-				$pages_frequency = apply_filters('d4seo_pages_frequency', 'monthly');
-				$pages_priority  = apply_filters('d4seo_pages_priority', '0.7');
-
-				$blog_id = get_option( 'page_for_posts' );
-
-				while ( $post_query->have_posts() ) {
-					$post_query->the_post();
-
-					$post_id = get_the_id();
-
-					$exclude = get_post_meta( $post_id, 'd4seo_sitemap_exclude', true);
-					if ( empty($exclude) ) {
-						$item_values = array(
-							'loc'         => get_the_permalink(),
-							'lastmod'     => get_the_modified_date('c'),
-							'changefreq'  => $pages_frequency,
-							'priority'    => $pages_priority,
-						);
-						$items[] = apply_filters( 'd4seo_page_item', $item_values, $post_id );
-					}
-				}
-
-			} wp_reset_postdata();
-
+		if ( ! in_array( $sitemap, $d4seo_sitemaps ) ) {
+			return; // nothing to do. I don't wanna make an error for this.
 		}
 
-		return $items;
+		unset( $d4seo_sitemaps[ $sitemap ] );
 
-	} add_filter('d4seo_sitemap_items', 'get_d4seo_sitemap_items_pages', 10, 2 );
-
-
+	}
 
 
-
-/**
- * Filter for d4seo_page_item. Add homepage defaults
- * 
- * @param array $item_values page values
- * 
- * @param array $post_id ID of the current post
- *
- * @since 1.1
- *
- * @return array $item_values
- */
-	function filter_d4seo_page_item_home( $item_values, $post_id ) {
-
-		$frontpage_id = get_option( 'page_on_front' );
-		if ( $post_id == $frontpage_id ) {
-			$item_values['changefreq'] = apply_filters('d4seo_home_frequency', 'monthly');
-			$item_values['priority']   = apply_filters('d4seo_home_priority',  '1.0');
-		} 
-		return $item_values;
-
-	} add_filter('d4seo_page_item', 'filter_d4seo_page_item_home', 10, 2);
-
-
-
-
-/**
- * Filter for d4seo_page_item. Add blog archive page defaults
- * 
- * @param array $item_values page values
- * 
- * @param array $post_id ID of the current post
- *
- * @since 1.1
- *
- * @return array $item_values
- */
-	function filter_d4seo_page_item_blog( $item_values, $post_id ) {
-
-		$blog_id = get_option( 'page_for_posts' );
-		if ( $post_id == $blog_id ) {
-			$pages_priority  = apply_filters('d4seo_pages_priority', '0.7');
-			$item_values['changefreq'] = apply_filters('d4seo_blog_frequency', 'weekly');
-			$item_values['priority']   = apply_filters('d4seo_blog_priority',  $pages_priority);
-		} 
-		return $item_values;
-
-	} add_filter('d4seo_page_item', 'filter_d4seo_page_item_blog', 10, 2);

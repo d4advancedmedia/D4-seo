@@ -29,41 +29,6 @@
 
 
 
-/**
- * Builds the markup for sitemaps
- *
- * @param string $variables 
- *
- * @since 1.1
- * 
- * @return string $output
- */
-	function render_xmlsitemap_urlset($variables = null) {
-
-		$variables = explode('-', $variables);
-		
-		$items = apply_filters('d4seo_sitemap_items', array(), $variables );
-
-		$output = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-			$output .= "\n";
-			foreach ($items as $item) {
-				$output .= '<url>';
-					$output .= "\n";
-					foreach ($item as $key => $value) {
-						$output .= "<{$key}>" . $value . "</{$key}>";
-						$output .= "\n";
-					}
-				$output .= '</url>';
-				$output .= "\n";
-			}
-		$output .= '</urlset>';
-
-		return $output;
-
-	}
-
-
-
 
 
 /**
@@ -75,22 +40,34 @@
  */
 	function render_xmlsitemap_index() {
 
+		global $d4seo_sitemaps;
+		$baseURL = trailingslashit(site_url());
+
 		$output = '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 			$output .= "\n";
 
-			$baseURL = trailingslashit(site_url());
+			foreach ( $d4seo_sitemaps as $slug => $sitemap_args ) {
 
-			$sitemaps = apply_filters('d4seo_sitemaps', array() );
-			if ( ! empty($sitemaps) && is_array($sitemaps) ) {
-				foreach ($sitemaps as $key => $value) {
-					$output .= '<sitemap>';
+				$query_args = $sitemap_args['query_args'];
+				$query_args['posts_per_page'] = 1;
+				$query_args['orderby']        = 'modified';
+				$query_args['order']          = 'DESC';
+
+				$sitemap_query = new WP_Query( $query_args );
+				if ( $sitemap_query->have_posts() ) {
+					while ( $sitemap_query->have_posts() ) {
+						$sitemap_query->the_post();
+
+						$output .= '<sitemap>';
+							$output .= "\n";
+							$output .= '<loc>' . $baseURL . 'sitemap-' . $slug . '.xml' . '</loc>';
+							$output .= "\n";
+							$output .= '<lastmod>' . get_the_modified_date('c') . '</lastmod>';
+							$output .= "\n";
+						$output .= '</sitemap>';
 						$output .= "\n";
-						$output .= '<loc>' . $baseURL . 'sitemap-' . $value['slug'] . '.xml' . '</loc>';
-						$output .= "\n";
-						$output .= '<lastmod>' . $value['lastmod'] . '</lastmod>';
-						$output .= "\n";
-					$output .= '</sitemap>';
-					$output .= "\n";
+
+					} wp_reset_postdata();
 				}
 			}
 
@@ -99,3 +76,63 @@
 		return $output;
 
 	}
+
+
+
+
+
+/**
+ * Builds the markup for sitemaps
+ *
+ * @param string $variables 
+ *
+ * @since 1.1
+ * 
+ * @return string $output
+ */
+	function render_xmlsitemap_urlset($variables) {
+
+		global $d4seo_sitemaps;
+		$variables = explode('-', $variables);
+		$slug = $variables[0];
+		$sitemap = $d4seo_sitemaps[$slug];
+
+		$sitemap_query_args = $sitemap['query_args'];
+
+		$sitemap_items = new WP_Query( $sitemap_query_args );
+
+		if ( $sitemap_items->have_posts() ) {
+
+			$posts_frequency = $sitemap['changefreq'];
+			$posts_priority  = $sitemap['priority'];
+
+			$output = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+				$output .= "\n";
+
+				while ( $sitemap_items->have_posts() ) {
+					$sitemap_items->the_post();
+
+					$output .= '<url>';
+						$output .= "\n";
+						$output .= '<loc>'        . get_the_permalink()        . '</loc>';
+						$output .= "\n";
+						$output .= '<lastmod>'    . get_the_modified_date('c') . '</lastmod>';
+						$output .= "\n";
+						$output .= '<changefreq>' . $posts_frequency . '</changefreq>';
+						$output .= "\n";
+						$output .= '<priority>'   . $posts_priority  . '</priority>';
+						$output .= "\n";
+					$output .= '</url>';
+					$output .= "\n";
+
+				}
+			$output .= '</urlset>';
+
+			return $output;
+
+		} wp_reset_postdata();
+		
+
+
+	}
+
