@@ -33,6 +33,29 @@ function register_d4seo_default_sitemaps() {
 
 
 
+function filter_d4seo_sitemap_items_pages ($item, $variables) {
+
+	if (  $variables[0] == 'pages' ) {
+
+		$item_id = get_the_id();
+
+		$frontpage_id = get_option( 'page_on_front' ); 
+		if ( $item_id == $frontpage_id ) { 
+			$item['changefreq'] = apply_filters('d4seo_home_frequency', 'monthly'); 
+			$item['priority']   = apply_filters('d4seo_home_priority',  '1.0'); 
+		}
+
+		$blog_id = get_option( 'page_for_posts' ); 
+		if ( $item_id == $blog_id ) {
+			$item['changefreq'] = apply_filters('d4seo_blog_frequency', 'weekly');
+		}  
+
+	}
+
+	return $item;
+ 
+} add_filter( 'd4seo_sitemap_items', 'filter_d4seo_sitemap_items_pages', 10, 2);
+
 
 
 /**
