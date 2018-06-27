@@ -27,24 +27,29 @@
  */
 	function filter_document_title_parts_cmg( $title ) {
 
-		$post_id = get_the_ID();
-		$d4seo_title = get_post_meta( $post_id, 'd4seo_title', true);
-		if ( ! empty($d4seo_title) ) {
+		if ( ! is_404() ) {
 
-			$d4seo_title = apply_filters( 'd4seo_title', $d4seo_title );
-			$d4seo_title = esc_attr($d4seo_title);
-			$title['title'] = $d4seo_title;
+			$post_id = get_the_ID();
+			$d4seo_title = get_post_meta( $post_id, 'd4seo_title', true);
+			if ( ! empty($d4seo_title) ) {
+
+				$d4seo_title = apply_filters( 'd4seo_title', $d4seo_title );
+				$d4seo_title = esc_attr($d4seo_title);
+				$title['title'] = $d4seo_title;
 
 
-			$d4seo_title_overwrite = get_post_meta( $post_id, 'd4seo_title_overwrite', true);
-			$d4seo_title_overwrite = apply_filters( 'd4seo_title_overwrite', $d4seo_title_overwrite );
-			if ($d4seo_title_overwrite == '1') {
-				$title['page']     = apply_filters( 'd4seo_title_overwrite_page', '' );
-				$title['tagline']  = apply_filters( 'd4seo_title_overwrite_tagline', '' );
-				$title['site']     = apply_filters( 'd4seo_title_overwrite_site', '' );
-			}
+				$d4seo_title_overwrite = get_post_meta( $post_id, 'd4seo_title_overwrite', true);
+				$d4seo_title_overwrite = apply_filters( 'd4seo_title_overwrite', $d4seo_title_overwrite );
+				if ($d4seo_title_overwrite == '1') {
+					$title['page']     = apply_filters( 'd4seo_title_overwrite_page', '' );
+					$title['tagline']  = apply_filters( 'd4seo_title_overwrite_tagline', '' );
+					$title['site']     = apply_filters( 'd4seo_title_overwrite_site', '' );
+				}
 
-		} 
+			} 
+		} else {
+			$title['title'] = apply_filters( 'd4seo_404_title', 'Page not found');
+		}
 
 
 		/*
