@@ -3,7 +3,7 @@
 Plugin Name: D4 SEO
 Plugin URI: https://d4am.com/
 Description: Dead simple SEO tool for expertly overriding the built in markup. Warning, not for the faint of heart, you need to know what you're doing to use this plugin
-Version: 2000
+Version: 2001
 Author: D4 Adv. Media
 */
 include('frontend/index.php');
