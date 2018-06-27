@@ -22,6 +22,7 @@
  * @param title $title The title array being filtered
  *
  * @since 1.0
+ * @since 2001 added the 404 override & 'd4seo_404_title' filter
  * 
  * @return array $title
  */
@@ -32,22 +33,63 @@
 			$post_id = get_the_ID();
 			$d4seo_title = get_post_meta( $post_id, 'd4seo_title', true);
 			if ( ! empty($d4seo_title) ) {
-
+				/**
+				 * Filters the d4seo_title 
+				 *
+				 * @since 2000
+				 *
+				 * @param string $d4seo_title
+				 */
 				$d4seo_title = apply_filters( 'd4seo_title', $d4seo_title );
 				$d4seo_title = esc_attr($d4seo_title);
 				$title['title'] = $d4seo_title;
 
 
 				$d4seo_title_overwrite = get_post_meta( $post_id, 'd4seo_title_overwrite', true);
+				/**
+				 * Filters the overwrite title
+				 *
+				 * @since 2000
+				 *
+				 * @param string $d4seo_title_overwrite
+				 */
 				$d4seo_title_overwrite = apply_filters( 'd4seo_title_overwrite', $d4seo_title_overwrite );
 				if ($d4seo_title_overwrite == '1') {
+					/**
+					 * Filters the page variable
+					 *
+					 * @since 2000
+					 *
+					 * @param string $blank
+					 */
 					$title['page']     = apply_filters( 'd4seo_title_overwrite_page', '' );
+					/**
+					 * Filters the tagline variable
+					 *
+					 * @since 2000
+					 *
+					 * @param string $blank
+					 */
 					$title['tagline']  = apply_filters( 'd4seo_title_overwrite_tagline', '' );
+					/**
+					 * Filters the site variable
+					 *
+					 * @since 2000
+					 *
+					 * @param string $blank
+					 */
 					$title['site']     = apply_filters( 'd4seo_title_overwrite_site', '' );
 				}
 
 			} 
 		} else {
+			/**
+			 * Filters the 404 title
+			 *
+			 * @since 2001
+			 *
+			 * @param string $404_title_tag
+			 */
 			$title['title'] = apply_filters( 'd4seo_404_title', 'Page not found');
 		}
 
