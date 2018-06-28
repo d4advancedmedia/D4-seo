@@ -22,13 +22,13 @@
  * @param title $title The title array being filtered
  *
  * @since 1.0
- * @since 2001 added the 404 override & 'd4seo_404_title' filter
+ * @since 2001 Limited the title overwrite to singulars only
  * 
  * @return array $title
  */
 	function filter_document_title_parts_cmg( $title ) {
 
-		if ( ! is_404() ) {
+		if ( is_singular() ) {
 
 			$post_id = get_the_ID();
 			$d4seo_title = get_post_meta( $post_id, 'd4seo_title', true);
@@ -36,7 +36,7 @@
 				/**
 				 * Filters the d4seo_title 
 				 *
-				 * @since 2000
+				 * @since  1.0
 				 *
 				 * @param string $d4seo_title
 				 */
@@ -49,7 +49,7 @@
 				/**
 				 * Filters the overwrite title
 				 *
-				 * @since 2000
+				 * @since 1.0
 				 *
 				 * @param string $d4seo_title_overwrite
 				 */
@@ -58,7 +58,7 @@
 					/**
 					 * Filters the page variable
 					 *
-					 * @since 2000
+					 * @since 1.0
 					 *
 					 * @param string $blank
 					 */
@@ -66,7 +66,7 @@
 					/**
 					 * Filters the tagline variable
 					 *
-					 * @since 2000
+					 * @since 1.0
 					 *
 					 * @param string $blank
 					 */
@@ -74,7 +74,7 @@
 					/**
 					 * Filters the site variable
 					 *
-					 * @since 2000
+					 * @since 1.0
 					 *
 					 * @param string $blank
 					 */
@@ -82,39 +82,7 @@
 				}
 
 			} 
-		} else {
-			/**
-			 * Filters the 404 title
-			 *
-			 * @since 2001
-			 *
-			 * @param string $404_title_tag
-			 */
-			$title['title'] = apply_filters( 'd4seo_404_title', 'Page not found');
 		}
-
-
-		/*
-						if ( is_home()       ) : echo get_the_title( get_option( 'page_for_posts' ) );
-					elseif ( is_post_type_archive() ) : post_type_archive_title();
-					elseif ( is_day()        ) : printf( __( 'Day: %s', 'skivvy' ), get_the_date() );
-					elseif ( is_month()      ) : printf( __( 'Month: %s', 'skivvy' ), get_the_date( 'F Y' ) );
-					elseif ( is_year()       ) : printf( __( 'Year: %s', 'skivvy' ), get_the_date( 'Y' ) );
-					elseif ( is_tax()        ) : $term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ); echo $term->name;
-					elseif ( is_tag()        ) : single_tag_title();
-					elseif ( is_category()   ) : single_cat_title();
-					elseif ( is_author()     ) : printf( __( 'Posts by %s', 'skivvy' ), sprintf( '<span class="vcard"><a href="%1$s" rel="me">%2$s</a></span>', esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ), get_the_author() ) );
-					elseif ( is_archive()    ) : echo get_the_title( get_option( 'page_for_posts' ) );
-					elseif ( is_search()     ) : _e( 'Search Results', 'skivvy' );
-					elseif ( is_attachment() ) : the_title();
-					elseif ( is_single()     ) : the_title();
-					elseif ( is_front_page() ) : #the_title();
-					elseif ( is_page()       ) : the_title();
-					elseif ( is_404()        ) : _e( '404 | Page not found' , 'skivvy' );
-					else                       : // Ninja Silence....
-					endif;
-
-		//*/
 
 		return $title;
 
